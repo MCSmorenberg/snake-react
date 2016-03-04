@@ -6,35 +6,95 @@ import Board from './Board';
 class App extends React.Component {
   constructor() {
     super();
-    document.onkeydown = this.handleKeyPress;
+
+    this.gridSize = 36;
+
+    this.state = {
+      movementDirection: 'right',
+      playerPosition: {
+        x: 0,
+        y: 0
+      }
+    };
+
+    document.onkeydown = this.handleKeyPress.bind(this);
+  }
+
+  componentDidMount() {
+    this.startMoving();
+  }
+
+  startMoving() {
+    self = this;
+    setTimeout(function() {
+      self.movePlayer(self.state.movementDirection || 'right');
+      self.startMoving();
+    }, 100);
   }
 
   handleKeyPress(event) {
-    console.log("boo!");
-    console.log(event.keyCode);
     switch (event.keyCode) {
       case 38:
-        console.log('up');
+        this.movePlayer('up');
         event.preventDefault();
         break;
       case 40:
-        console.log('down');
+        this.movePlayer('down');
         event.preventDefault();
         break;
       case 37:
-        console.log('left');
+        this.movePlayer('left');
         event.preventDefault();
         break;
       case 39:
-        console.log('right');
+        this.movePlayer('right');
         event.preventDefault();
         break;
     }
   }
 
+  movePlayer(direction) {
+    console.log(`moving to: ${this.state.movementDirection}`);
+    let x = this.state.playerPosition['x'];
+    let y = this.state.playerPosition['y'];
+    let newX = x;
+    let newY = y;
+    let max = this.gridSize - 1;
+
+    if (direction === 'up') {
+      newY = y === 0 ?
+        max :
+        y-1;
+    }
+    if (direction === 'down') {
+      newY = y === max ?
+        0 :
+        y+1;
+    }
+
+    if (direction === 'left') {
+      newX = x === 0 ?
+        max :
+        x-1;
+    }
+    if (direction === 'right') {
+      newX = x === max ?
+        0 :
+        x+1;
+    }
+
+    this.setState({
+      movementDirection: direction,
+      playerPosition: {
+        x: newX,
+        y: newY
+      }
+    });
+  }
+
   render() {
     return (
-        <Board gridSize={36} />
+        <Board gridSize={this.gridSize} playerPosition={this.state.playerPosition} />
     );
   }
 }

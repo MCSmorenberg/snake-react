@@ -1,41 +1,29 @@
 import React from 'react';
+import Space from './Space';
+import Player from './Player';
 
 class Board extends React.Component {
 
-  artefacts() {
-    return {}
-    //   5: {
-    //     5: <Player/>
-    //   },
-    //   18: {
-    //     24: <Food />
-    //   }
-    // }
+  isPlayerInPosition(x, y) {
+    return this.props.playerPosition['x'] === x &&
+      this.props.playerPosition['y'] === y;
   }
 
   render() {
+    console.log(this.props.playerPosition);
     let gridSize = this.props.gridSize;
     let rows = [];
-    let artefacts = this.artefacts();
 
     for (var y = 0; y < gridSize; y++) {
       let cols = [];
 
       for (var x = 0; x < gridSize; x++) {
-        cols.push(
-          <div key={`col-${x}-${y}`}
-            style={{
-              margin: 0,
-              padding: 0,
-              backgroundColor: "#fff",
-              border: "1px dotted #333",
-              display: "inline-block",
-              width: `${700/gridSize}px`,
-              height: `${700/gridSize}px`
-            }} className="col">
-            {artefacts[x] ? (artefacts[x][y] || '') : ''}
-          </div>
-        );
+        let col = <Space key={`col-${x}-${y}`} gridSize={this.props.gridSize} />;
+        if (this.isPlayerInPosition(x, y)) {
+          col = <Player key={`col-${x}-${y}`} gridSize={this.props.gridSize} />;
+        }
+        // <Food />
+        cols.push(col);
       }
       rows.push(
         <div key={`col-${y}`} style={{margin: 0, padding: 0, height: `${700/gridSize}px`}} className="row">{cols}</div>
