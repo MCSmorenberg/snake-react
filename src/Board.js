@@ -1,18 +1,16 @@
 import React from 'react';
-import Player from './Player';
-import Food from './Food';
 
 class Board extends React.Component {
 
   artefacts() {
-    return {
-      5: {
-        5: <Player />
-      },
-      18: {
-        24: <Food />
-      }
-    }
+    return {}
+    //   5: {
+    //     5: <Player/>
+    //   },
+    //   18: {
+    //     24: <Food />
+    //   }
+    // }
   }
 
   render() {
