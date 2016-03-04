@@ -14,8 +14,13 @@ class App extends React.Component {
       playerPosition: {
         x: 0,
         y: 0
-      }
-    };
+      },
+      foodPosition: {
+      x: 10,
+      y: 10
+    },
+    foodCount: 0
+  };
 
     document.onkeydown = this.handleKeyPress.bind(this);
   }
@@ -53,12 +58,23 @@ class App extends React.Component {
     }
   }
 
+  hitFoodCheck() {
+  if(this.state.playerPosition['x'] === this.state.foodPosition['x'] && this.state.playerPosition['y'] === this.state.foodPosition['y']) {
+    foodCount += 1;
+    console.log(foodCount);
+    }
+  }
+
   movePlayer(direction) {
     console.log(`moving to: ${this.state.movementDirection}`);
     let x = this.state.playerPosition['x'];
     let y = this.state.playerPosition['y'];
+
     let newX = x;
     let newY = y;
+    let foodX = this.state.foodPosition['x'];
+    let foodY = this.state.foodPosition['y'];
+    let foodCount = this.state.foodCount;
     let max = this.gridSize - 1;
 
     if (direction === 'up') {
@@ -83,18 +99,28 @@ class App extends React.Component {
         x+1;
     }
 
+    if (foodX === newX && foodY === newY) {
+      foodCount += 1;
+      console.log(foodCount);
+    }
+
     this.setState({
       movementDirection: direction,
       playerPosition: {
         x: newX,
         y: newY
-      }
+      },
+      foodPosition: {
+        x: foodX,
+        y: foodY
+      },
+      foodCount: foodCount
     });
   }
 
   render() {
     return (
-        <Board gridSize={this.gridSize} playerPosition={this.state.playerPosition} />
+        <Board gridSize={this.gridSize} playerPosition={this.state.playerPosition} foodPosition={this.state.foodPosition} foodCount={this.state.foodCount} />
     );
   }
 }
