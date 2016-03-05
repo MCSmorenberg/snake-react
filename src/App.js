@@ -11,6 +11,7 @@ class App extends React.Component {
 
     this.state = {
       movementDirection: 'right',
+      tailPositions: [],
       playerPosition: {
         x: 0,
         y: 0
@@ -34,7 +35,8 @@ class App extends React.Component {
     setTimeout(function() {
       self.movePlayer(self.state.movementDirection || 'right');
       self.startMoving();
-    }, 100);
+      self.hitFoodCheck();
+    }, 1000);
   }
 
   handleKeyPress(event) {
@@ -59,21 +61,20 @@ class App extends React.Component {
   }
 
   hitFoodCheck() {
-  if(this.state.playerPosition['x'] === this.state.foodPosition['x'] && this.state.playerPosition['y'] === this.state.foodPosition['y']) {
-    foodCount += 1;
-    console.log(foodCount);
+    if(this.state.playerPosition.x === this.state.foodPosition.x && this.state.playerPosition.y === this.state.foodPosition.y) {
+      this.state.foodCount += 1;
+      this.state.foodPosition
     }
   }
 
   movePlayer(direction) {
-    console.log(`moving to: ${this.state.movementDirection}`);
-    let x = this.state.playerPosition['x'];
-    let y = this.state.playerPosition['y'];
+    let x = this.state.playerPosition.x;
+    let y = this.state.playerPosition.y;
 
     let newX = x;
     let newY = y;
-    let foodX = this.state.foodPosition['x'];
-    let foodY = this.state.foodPosition['y'];
+    let foodX = this.state.foodPosition.x;
+    let foodY = this.state.foodPosition.y;
     let foodCount = this.state.foodCount;
     let max = this.gridSize - 1;
 
@@ -99,10 +100,10 @@ class App extends React.Component {
         x+1;
     }
 
-    if (foodX === newX && foodY === newY) {
-      foodCount += 1;
-      console.log(foodCount);
-    }
+    // if (foodX === newX && foodY === newY) {
+    //   foodCount += 1;
+    //   console.log(foodCount);
+    // }
 
     this.setState({
       movementDirection: direction,
@@ -110,6 +111,9 @@ class App extends React.Component {
         x: newX,
         y: newY
       },
+      tailPositions: [
+        { x: x, y: y }
+      ],
       foodPosition: {
         x: foodX,
         y: foodY
@@ -120,7 +124,7 @@ class App extends React.Component {
 
   render() {
     return (
-        <Board gridSize={this.gridSize} playerPosition={this.state.playerPosition} foodPosition={this.state.foodPosition} foodCount={this.state.foodCount} />
+        <Board gridSize={this.gridSize} playerPosition={this.state.playerPosition} tailPositions={this.state.tailPositions} foodPosition={this.state.foodPosition} foodCount={this.state.foodCount} />
     );
   }
 }
