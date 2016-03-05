@@ -12,12 +12,10 @@ class Board extends React.Component {
   }
 
   isTailInPosition(x, y) {
-    if (!!!this.props || !!!this.props.tailPositions || this.props.foodCount === 0)  { return false; }
+    if (!this.props || !!!this.props.tailPositions || this.props.foodCount === 0)  { return false; }
     let found = false;
-
     this.props.tailPositions.forEach((pos, i) => {
       if (i < this.props.foodCount && pos.x === x && pos.y === y) {
-        console.log(pos);
         found = true;
       }
     });

@@ -7,20 +7,20 @@ class App extends React.Component {
   constructor() {
     super();
 
-    this.gridSize = 36;
+    this.gridSize = 15;
 
     this.state = {
       movementDirection: 'right',
-      tailPositions: [],
+      tailPositions: [{x:0, y:0}, {x:1, y:0}, {x:2, y:0}, {x:3, y:0}],
       playerPosition: {
-        x: 0,
+        x: 4,
         y: 0
       },
       foodPosition: {
-      x: 10,
-      y: 10
+      x: 4,
+      y: 4
     },
-    foodCount: 0
+    foodCount: 4
   };
 
     document.onkeydown = this.handleKeyPress.bind(this);
@@ -79,19 +79,14 @@ class App extends React.Component {
     let max = this.gridSize - 1;
 
     if (direction === 'up') {
-      newY = y === 0 ?
-        max :
-        y-1;
+      newY = y === 0 ? max : y-1;
     }
     if (direction === 'down') {
-      newY = y === max ?
-        0 :
-        y+1;
+      newY = y === max ? 0 : y+1;
     }
 
     if (direction === 'left') {
-      newX = x === 0 ?
-        max :
+      newX = x === 0 ?  max :
         x-1;
     }
     if (direction === 'right') {
@@ -100,20 +95,20 @@ class App extends React.Component {
         x+1;
     }
 
-    // if (foodX === newX && foodY === newY) {
-    //   foodCount += 1;
-    //   console.log(foodCount);
-    // }
+    var tail = this.state.tailPositions;
+    var removed_element = tail.shift();  
 
+    // tail = [{x:x, y:y}]
+    //add one
+    //remove one
     this.setState({
       movementDirection: direction,
       playerPosition: {
         x: newX,
         y: newY
       },
-      tailPositions: [
-        { x: x, y: y }
-      ],
+      tailPositions: tail,
+
       foodPosition: {
         x: foodX,
         y: foodY
