@@ -7,7 +7,7 @@ class App extends React.Component {
   constructor() {
     super();
 
-    this.gridSize = 36;
+    this.gridSize = 400/8;
 
     this.state = {
       movementDirection: 'right',
@@ -17,13 +17,14 @@ class App extends React.Component {
         y: 0
       },
       foodPosition: {
-      x: 4,
-      y: 4
-    },
-    foodCount: 1
-  };
+        x: 4,
+        y: 4
+      },
+      foodCount: 1
+    };
 
-    document.onkeydown = this.handleKeyPress.bind(this);
+    let canvas = document.getElementById("canvas");
+    window.onkeydown = this.handleKeyPress.bind(this);
   }
 
   componentDidMount() {
@@ -36,10 +37,11 @@ class App extends React.Component {
       self.movePlayer(self.state.movementDirection || 'right');
       self.startMoving();
       self.hitFoodCheck();
-    }, 1000);
+    }, 100);
   }
 
   handleKeyPress(event) {
+    console.log(event.keyCode);
     switch (event.keyCode) {
       case 38:
         this.movePlayer('up');
@@ -136,6 +138,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.state.playerPosition);
     return (
         <Board gridSize={this.gridSize} playerPosition={this.state.playerPosition} tailPositions={this.state.tailPositions} foodPosition={this.state.foodPosition} foodCount={this.state.foodCount} />
     );
