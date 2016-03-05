@@ -11,7 +11,7 @@ class App extends React.Component {
 
     this.state = {
       movementDirection: 'right',
-      tailPositions: [{x:0, y:0}, {x:1, y:0}, {x:2, y:0}, {x:3, y:0}],
+      tailPositions: [{x: 3, y: 0}],
       playerPosition: {
         x: 4,
         y: 0
@@ -20,7 +20,7 @@ class App extends React.Component {
       x: 4,
       y: 4
     },
-    foodCount: 4
+    foodCount: 1
   };
 
     document.onkeydown = this.handleKeyPress.bind(this);
@@ -61,16 +61,17 @@ class App extends React.Component {
   }
 
     hitFoodCheck() {
-    let randomFoodPosition = this.getRandomIntInclusive(0, 15);
-    if(this.state.playerPosition.x === this.state.foodPosition.x && this.state.playerPosition.y === this.state.foodPosition.y) {
-      this.state.foodCount += 1;
-      this.state.foodPosition = {
-        x: randomFoodPosition,
-        y: randomFoodPosition
-      };
-      
+      let randomFoodPosition = this.getRandomIntInclusive(0, 36);
+
+      if(this.state.playerPosition.x === this.state.foodPosition.x && this.state.playerPosition.y === this.state.foodPosition.y) {
+        this.state.foodCount += 1;
+        this.state.foodPosition = {
+          x: randomFoodPosition,
+          y: randomFoodPosition
+        };
+
+      }
     }
-  }
 
   getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -105,8 +106,8 @@ class App extends React.Component {
         x+1;
     }
 
-    var tail = this.state.tailPositions;
-    var removed_element = tail.shift();
+    let tail = this.state.tailPositions;
+    var add_element = tail.unshift({x: x, y: y});
 
     // tail = [{x:x, y:y}]
     //add one
@@ -124,7 +125,14 @@ class App extends React.Component {
         y: foodY
       },
       foodCount: foodCount
-    });
+    }, this.cleanupTail.bind(this));
+  }
+
+  cleanupTail() {
+    let tail = this.state.tailPositions;
+    while (tail.length > this.state.foodCount - 1) {
+      tail.pop();
+    }
   }
 
   render() {
