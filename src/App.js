@@ -7,7 +7,7 @@ class App extends React.Component {
   constructor() {
     super();
 
-    this.gridSize = 15;
+    this.gridSize = 36;
 
     this.state = {
       movementDirection: 'right',
@@ -60,12 +60,22 @@ class App extends React.Component {
     }
   }
 
-  hitFoodCheck() {
+    hitFoodCheck() {
+    let randomFoodPosition = this.getRandomIntInclusive(0, 15);
     if(this.state.playerPosition.x === this.state.foodPosition.x && this.state.playerPosition.y === this.state.foodPosition.y) {
       this.state.foodCount += 1;
-      this.state.foodPosition
+      this.state.foodPosition = {
+        x: randomFoodPosition,
+        y: randomFoodPosition
+      };
+      
     }
   }
+
+  getRandomIntInclusive(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
 
   movePlayer(direction) {
     let x = this.state.playerPosition.x;
@@ -96,7 +106,7 @@ class App extends React.Component {
     }
 
     var tail = this.state.tailPositions;
-    var removed_element = tail.shift();  
+    var removed_element = tail.shift();
 
     // tail = [{x:x, y:y}]
     //add one
